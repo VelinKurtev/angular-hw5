@@ -1,0 +1,25 @@
+mat-card {
+    width: 80vw;
+    height: 80vh;
+    padding: 20px;
+}
+
+mat-card-content {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.pokemon-card {
+    width: 150px;
+    height: 150px;
+    background-color: gold;
+    display: flex;
+    justify-content: center;
+    border-radius: 15px;
+    padding: 5px;
+    cursor: pointer;
+    flex-direction: column;
+    align-items: center;
+}
