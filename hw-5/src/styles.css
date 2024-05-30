@@ -3,7 +3,6 @@
 html,
 body {
     height: 100%;
-    background-color: orangered;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,4 +11,6 @@ body {
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-image: url("assets/imgs/catalogue-back.jpg");
+    background-position: center;
 }

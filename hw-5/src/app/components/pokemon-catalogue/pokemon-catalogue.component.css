@@ -2,6 +2,11 @@ mat-card {
     width: 1300px;
     height: 700px;
     padding: 20px;
+    background-color: beige;
+}
+mat-card-title{
+    display: flex;
+    justify-content: center;
 }
 
 mat-card-content {
@@ -14,7 +19,11 @@ mat-card-content {
 .pokemon-card {
     width: 150px;
     height: 150px;
-    background-color: gold;
+    background-image: url('../../../assets/imgs/card-back.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border: 3px solid gold;
     display: flex;
     justify-content: center;
     border-radius: 15px;
@@ -22,6 +31,12 @@ mat-card-content {
     cursor: pointer;
     flex-direction: column;
     align-items: center;
+}
+
+.pokemon-card > h3 {
+    color: white;
+    font-size: 24px;
+    
 }
 
 img,h3 {
@@ -37,4 +52,5 @@ mat-card-footer {
     display: flex;
     justify-content: flex-end;
     font-size: 20px;
+    padding-top: 50px;
 }

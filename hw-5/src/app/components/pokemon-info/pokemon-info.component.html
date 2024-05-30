@@ -3,14 +3,14 @@
         <h1>{{pokemonName | titlecase}}</h1>
     </mat-card-title>
     <mat-card-content>
-        <img *ngIf="pokemonInfo" [src]="pokemonInfo.sprites.front_default" [alt]="pokemonName | titlecase">
+        <div class="pokemon-profile">
+            <img *ngIf="pokemonInfo" [src]="pokemonInfo.sprites.front_default" [alt]="pokemonName | titlecase">
+        </div>
         <div class="pokemon-info" *ngIf="pokemonInfo">
             <div>
                 <p><strong>Weight:</strong> {{ pokemonInfo.weight }}</p>
                 <p><strong>Height:</strong> {{ pokemonInfo.height }}</p>
                 <p><strong>Base Experience:</strong> {{ pokemonInfo.base_experience }}</p>
-            </div>
-            <div>
                 <p><strong>Abilities:</strong></p>
                 <ul>
                     <li *ngFor="let ability of pokemonInfo.abilities">{{ ability.ability.name | titlecase }}</li>
@@ -25,10 +25,9 @@
             <div>
                 <p><strong>Stats:</strong></p>
                 <ul>
-                    <li *ngFor="let stat of pokemonInfo.stats">{{stat.stat.name | titlecase}}: {{ stat.base_stat }}</li>
+                    <li *ngFor="let stat of pokemonInfo.stats">{{stat.stat.name | titlecase}}: {{ stat.base_stat }}
+                    </li>
                 </ul>
-            </div>
-            <div>
                 <p><strong>Types:</strong></p>
                 <ul>
                     <li *ngFor="let type of pokemonInfo.types">{{type.type.name | titlecase}}</li>
