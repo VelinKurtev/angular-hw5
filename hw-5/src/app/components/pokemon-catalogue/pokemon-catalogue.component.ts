@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { PokemonDetail } from '../../models/pokemon-detail.model';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pokemon-catalogue',
@@ -16,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class PokemonCatalogueComponent {
   http = inject(HttpClient);
+  router = inject(Router);
   private apiUrl = 'https://pokeapi.co/api/v2/pokemon';
   pokemons: { [key: string]: PokemonDetail } = {};
   pokemonNames: string[] = [];
@@ -71,5 +73,9 @@ export class PokemonCatalogueComponent {
     }, error => {
       console.error('Failed to fetch Pokémon details', error);
     });
+  }
+  
+  openPokemonDetails(pokemonName: string) {
+    this.router.navigate(['/pokemon', pokemonName]);
   }
 }
