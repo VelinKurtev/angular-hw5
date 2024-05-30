@@ -1,0 +1,32 @@
+mat-card {
+    width: 1300px;
+    height: 700px;
+    padding: 20px;
+}
+
+mat-card-content {
+    display: flex;
+}
+
+img,
+h3 {
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+img {
+    width: 300px;
+    height: 300px;
+}
+
+.pokemon-info{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: larger;
+}

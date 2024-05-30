@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 
+export const apiUrl = 'https://pokeapi.co/api/v2/pokemon';
 @Component({
   selector: 'app-pokemon-catalogue',
   standalone: true,
@@ -15,10 +16,11 @@ import { Router } from '@angular/router';
   templateUrl: './pokemon-catalogue.component.html',
   styleUrl: './pokemon-catalogue.component.css'
 })
+
 export class PokemonCatalogueComponent {
   http = inject(HttpClient);
   router = inject(Router);
-  private apiUrl = 'https://pokeapi.co/api/v2/pokemon';
+  
   pokemons: { [key: string]: PokemonDetail } = {};
   pokemonNames: string[] = [];
   offset = 0;
@@ -26,7 +28,7 @@ export class PokemonCatalogueComponent {
   hasNextPokemons = false;
 
   getAllPokemons(offset: number, limit: number): Observable<{ name: string, url: string }[]> {
-    return this.http.get<{ results: { name: string, url: string }[], next: string }>(`${this.apiUrl}?offset=${offset}&limit=${limit}`)
+    return this.http.get<{ results: { name: string, url: string }[], next: string }>(`${apiUrl}?offset=${offset}&limit=${limit}`)
       .pipe(map(response => {
         this.hasNextPokemons = !!response.next;
         return response.results;
