@@ -5,11 +5,12 @@ import { Observable, forkJoin, map, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { PokemonDetail } from '../../models/pokemon-detail.model';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-pokemon-catalogue',
   standalone: true,
-  imports: [MatCardModule, HttpClientModule, CommonModule, MatIconModule],
+  imports: [MatCardModule, HttpClientModule, CommonModule, MatIconModule, MatButtonModule],
   templateUrl: './pokemon-catalogue.component.html',
   styleUrl: './pokemon-catalogue.component.css'
 })
@@ -18,10 +19,16 @@ export class PokemonCatalogueComponent {
   private apiUrl = 'https://pokeapi.co/api/v2/pokemon';
   pokemons: { [key: string]: PokemonDetail } = {};
   pokemonNames: string[] = [];
+  offset = 0;
+  limit = 0;
+  hasNextPokemons = false;
 
-  getAllPokemons(): Observable<{ name: string, url: string }[]> {
-    return this.http.get<{ results: { name: string, url: string }[] }>(`${this.apiUrl}`)
-      .pipe(map(response => response.results));
+  getAllPokemons(offset: number, limit: number): Observable<{ name: string, url: string }[]> {
+    return this.http.get<{ results: { name: string, url: string }[], next: string }>(`${this.apiUrl}?offset=${offset}&limit=${limit}`)
+      .pipe(map(response => {
+        this.hasNextPokemons = !!response.next;
+        return response.results;
+      }));
   }
 
   getPokemonInfo(pokemonUrl: string): Observable<PokemonDetail> {
@@ -29,7 +36,22 @@ export class PokemonCatalogueComponent {
   }
 
   ngOnInit() {
-    this.getAllPokemons().pipe(
+    this.loadNextPokemons();
+    this.limit += 20;
+  }
+
+  loadNextPokemons() {
+    this.offset += this.limit;
+    this.fetchPokemons();
+  }
+
+  loadPreviousPokemons() {
+    this.offset -= this.limit;
+    this.fetchPokemons();
+  }
+
+  fetchPokemons() {
+    this.getAllPokemons(this.offset, this.limit).pipe(
       switchMap(pokemons => {
         const pokemonInfoRequests = pokemons.map(pokemon =>
           this.getPokemonInfo(pokemon.url).pipe(
@@ -38,17 +60,16 @@ export class PokemonCatalogueComponent {
         );
         return forkJoin(pokemonInfoRequests);
       })
-    ).subscribe({
-      next: (pokemonDetails: { name: string, info: PokemonDetail }[]) => {
-        pokemonDetails.forEach(pokemonDetail => {
-          this.pokemons[pokemonDetail.name] = pokemonDetail.info;
-          this.pokemonNames.push(pokemonDetail.name);
-        });
-        console.log(this.pokemons);  // For debugging purposes
-      },
-      error: (err) => {
-        console.error('Failed to fetch Pokémon details', err);
-      }
+    ).subscribe((pokemonDetails: { name: string, info: PokemonDetail }[]) => {
+      this.pokemons = {};
+      this.pokemonNames = [];
+      pokemonDetails.forEach(pokemonDetail => {
+        this.pokemons[pokemonDetail.name] = pokemonDetail.info;
+        this.pokemonNames.push(pokemonDetail.name);
+      });
+      console.log(this.pokemons);
+    }, error => {
+      console.error('Failed to fetch Pokémon details', error);
     });
   }
 }

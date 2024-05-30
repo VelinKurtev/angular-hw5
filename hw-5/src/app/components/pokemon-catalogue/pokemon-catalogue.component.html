@@ -1,12 +1,19 @@
 <mat-card>
-    <mat-card-title>Pokemon catalogue</mat-card-title>
+    <mat-card-title>
+        <h1>Pokemon catalogue</h1>
+    </mat-card-title>
     <mat-card-content>
         <div class="pokemon-card" *ngFor="let pokemon of pokemonNames">
             <h3>{{ pokemon | titlecase }}</h3>
             <img src="{{ pokemons[pokemon]?.sprites?.front_default }}" alt="{{ pokemon | titlecase }} Image">
         </div>
-        <mat-card-footer>
-            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
-        </mat-card-footer>
     </mat-card-content>
+    <mat-card-footer>
+        <button mat-icon-button [disabled]="offset === 0" (click)="loadPreviousPokemons()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <button mat-icon-button [disabled]="!hasNextPokemons" (click)="loadNextPokemons()">
+            <mat-icon>arrow_forward</mat-icon>
+        </button>
+    </mat-card-footer>
 </mat-card>
